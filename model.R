@@ -3,9 +3,8 @@
 ## Author: Bikash Agrawal
 ## Date: 12th March Feb 2015
 ## Email: er.bikash21@gmail.com
-## Description: Apply Random forest to predict the survival rate and create a new csv file. This algorithm might helps to be in top 10 in Kaggle competition.
-##              Kaggle titanic competition in kaggle.com.
-##              http://www.kaggle.com/c/titanic-gettingStarted
+## Description: Apply Random forest to predict the survival rate and create a new csv file.
+##              https://www.kaggle.com/c/poker-rule-induction
 ## Step 1:  Data clean up
 ## Step 2:  Calculate probability of survival using Condition Inference Random Forest.
 ## References: 
@@ -17,6 +16,19 @@
 #################################################################################################
 #################################################################################################
 
+## Following Rules are classified in Poker
+## 0: Nothing in hand; not a recognized poker hand 
+## 1: One pair; one pair of equal ranks within five cards
+## 2: Two pairs; two pairs of equal ranks within five cards
+## 3: Three of a kind; three equal ranks within five cards
+## 4: Straight; five cards, sequentially ranked with no gaps
+## 5: Flush; five cards with the same suit
+## 6: Full house; pair + different rank three of a kind
+## 7: Four of a kind; four equal ranks within five cards
+## 8: Straight flush; straight + flush
+## 9: Royal flush; {Ace, King, Queen, Jack, Ten} + flush
+#################################################################################################
+#################################################################################################
 
 ### setting path of repo folder.
 getwd()
@@ -40,3 +52,18 @@ sessionInfo()
 ##########################################################################
 ########Cleaning up training dataset #####################################
 ##########################################################################
+print("Data Cleaning up process......")
+train <- read.csv("data/train.csv", header=TRUE)
+test <- read.csv("data/test.csv", header=TRUE)
+
+hand <- train[,11]
+head(train)
+train <- train[,-11]
+id <- 1:25010
+train2 <- cbind(id, train)
+rm("train")
+
+head(train2)
+tail(train2)
+head(test)
+tail(test)
