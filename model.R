@@ -67,3 +67,26 @@ head(train2)
 tail(train2)
 head(test)
 tail(test)
+
+
+hand <- factor(hand)
+
+set.seed(61)
+rf <- randomForest(train2, hand, xtest=test, ntree=1600)
+predictions <- levels(hand)[rf$test$predicted]
+
+r <- data.frame(predictions)
+id <- 1:1000000
+id <- data.frame(id)
+r <- cbind(id, r)
+colnames(r) <- c("id", "hand")
+write.csv(r, "try4_randomForest_1600_withoutMTRY.csv", row.names = FALSE, col.names = TRUE)
+
+
+res <- (0:9)[knn(train2, test, hand, k = 10, algorithm="cover_tree")]
+r <- data.frame(res)
+id <- 1:1000000
+id <- data.frame(id)
+r <- cbind(id, r)
+colnames(r) <- c("id", "hand")
+write.csv(r, "ouput/try1_knn_cover_tree_10.csv", row.names = FALSE, col.names = TRUE)
