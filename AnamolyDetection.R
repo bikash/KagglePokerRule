@@ -28,5 +28,11 @@ data(raw_data)
 res = AnomalyDetectionTs(raw_data, max_anoms=0.02, direction='both', plot=TRUE)
 res$plot
 
+## anomaly detection using anomalydetection vector. It is used to detect on or more significant anomalies in a vector raw_data (observations)
+AnomalyDetectionVec(raw_data[,2], max_anoms=0.02, period=1440, direction='both', only_last=FALSE, plot=TRUE)
+
+## Anomaly detection on the last day where we can see only_last="day" flag for anomaly.
+res = AnomalyDetectionTs(raw_data, max_anoms=0.02, direction='both', only_last="day", plot=TRUE)
+res$plot
 
 
