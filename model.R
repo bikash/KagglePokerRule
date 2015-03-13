@@ -37,16 +37,10 @@ setwd("/Users/bikash/repos/kaggle/KagglePokerRule/")
 library(dplyr)
 library(zoo)
 library(randomForest)
-library(rpart)
 library(rattle)
 library(rpart.plot)
 library(RColorBrewer)
 library(lattice)
-library(caret)
-library(party)
-library(Amelia) ## Amelia is packages to display missing data using missmap function
-library(corrgram) ## display corrgram plot of different varaibles
-require(Hmisc) ## used for function bystats to show relation between Age and Title
 sessionInfo()
 
 ##########################################################################
@@ -72,7 +66,7 @@ tail(test)
 hand <- factor(hand)
 
 set.seed(61)
-rf <- randomForest(train2, hand, xtest=test, ntree=1600)
+rf <- randomForest(train2, hand, xtest=test, ntree=1600, mtry=9)
 predictions <- levels(hand)[rf$test$predicted]
 
 r <- data.frame(predictions)
@@ -80,7 +74,7 @@ id <- 1:1000000
 id <- data.frame(id)
 r <- cbind(id, r)
 colnames(r) <- c("id", "hand")
-write.csv(r, "try4_randomForest_1600_withoutMTRY.csv", row.names = FALSE, col.names = TRUE)
+write.csv(r, "output/randomforestCSV.csv", row.names = FALSE)
 
 
 res <- (0:9)[knn(train2, test, hand, k = 10, algorithm="cover_tree")]
