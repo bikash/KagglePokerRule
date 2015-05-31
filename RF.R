@@ -55,19 +55,19 @@ hand <- factor(hand)
 set.seed(1234)
 
 
-model <- randomForest(x=train2,
-                       y=hand,
+x = data.frame(S1count=train2$S1count, S2count=train2$S2count, S3count=train2$S3count, S4count=train2$S4count, C12diff=train2$C12diff, 
+               C23diff=train2$C23diff,
+               C34diff=train2$C34diff, C45diff=train2$C45diff, C51diff=train2$C51diff, hand=hand)
+
+model <- randomForest(hand~., data=x,
                        mtry=9,
                        ntree=1500,
                        do.trace=10)
 
 
-rf <- randomForest(train2, hand, xtest=test, ntree=1600, mtry=9)
-predictions <- levels(hand)[rf$test$predicted]
+prediction <- predict(model, test, type="class")
 
-pred <- data.frame(predictions)
-id <- 1:1000000
-id <- data.frame(id)
-pred <- cbind(id, pred)
-colnames(pred) <- c("id", "hand")
-write.csv(pred, "poker_randomForest.csv", row.names = FALSE, col.names = TRUE)
+# Create submission dataframe and output to file
+submit <- data.frame(id = test$id, hand = prediction)
+write.csv(submit, file = "ouput/feature_random_forest_mtry.csv", row.names = FALSE)
+

@@ -141,3 +141,23 @@ id <- data.frame(id)
 r <- cbind(id, r)
 colnames(r) <- c("id", "hand")
 write.csv(r, "ouput/try1_knn_cover_tree_10.csv", row.names = FALSE, col.names = TRUE)
+
+
+
+
+
+## final model
+
+set.seed(1234)
+
+fit <- randomForest(as.factor(hand) ~
+                      S1 + C1 + S2 + C2 + S3 + C3 + S4 + C4 + S5 + C5,
+                    data=train,
+                    ntree = 2000, mtry=9)
+
+prediction <- predict(fit, test, type="class")
+
+# Create submission dataframe and output to file
+submit <- data.frame(id = test$id, hand = prediction)
+write.csv(submit, file = "ouput/random_forest_mtry.csv", row.names = FALSE)
+
